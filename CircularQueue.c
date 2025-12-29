@@ -6,7 +6,7 @@ int items[SIZE];
 int front = -1, rear = -1;
 
 int isFull() {
-    return ((front == 0 && rear == SIZE - 1) || (front == rear + 1));
+    return ((front == 0 && rear == SIZE - 1) || (front == (rear + 1) % SIZE);
 }
 
 int isEmpty() {
@@ -95,3 +95,4 @@ int main() {
     return 0;
 
 }
+
