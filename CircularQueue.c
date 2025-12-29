@@ -16,7 +16,8 @@ int isEmpty() {
 void enQueue(int element) {
     if (isFull()) {
         printf("\nQueue is full\n");
-    } else {
+    } 
+    else {
         if (front == -1) 
             front = 0;
         rear = (rear + 1) % SIZE;
@@ -30,12 +31,14 @@ int deQueue() {
     if (isEmpty()) {
         printf("\nQueue is empty\n");
         return -1;
-    } else {
+    } 
+    else {
         element = items[front];
         if (front == rear) {
             front = -1;
             rear = -1;
-        } else {
+        } 
+        else {
             front = (front + 1) % SIZE;
         }
         printf("\nDeleted %d\n", element);
@@ -46,7 +49,8 @@ int deQueue() {
 void peek() {
     if (isEmpty()) {
         printf("\nQueue is empty\n");
-    } else {
+    } 
+    else {
         printf("\nFront element is %d\n", items[front]);
     }
 }
@@ -54,7 +58,8 @@ void peek() {
 void display() {
     if (isEmpty()) {
         printf("\nQueue is empty\n");
-    } else {
+    } 
+    else {
         int i;
         printf("\nQueue elements: ");
         for (i = front; i != rear; i = (i + 1) % SIZE) {
@@ -95,4 +100,5 @@ int main() {
     return 0;
 
 }
+
 
