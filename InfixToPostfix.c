@@ -1,95 +1,66 @@
 #include <stdio.h>
-#include <stdlib.h>
-#define SIZE 5
+#include <ctype.h>
+#define MAX 100
 
-int items[SIZE];
-int front = -1, rear = -1;
+char stack[MAX];
+int top = -1;
 
-int isFull() {
-    return ((front == 0 && rear == SIZE - 1) || (front == rear + 1));
+void push(char x) {
+    stack[++top] = x;
 }
 
-int isEmpty() {
-    return (front == -1);
+char pop() {
+    return stack[top--];
 }
 
-void enQueue(int element) {
-    if (isFull()) {
-        printf("\nQueue is full\n");
-    } else {
-        if (front == -1) front = 0;
-        rear = (rear + 1) % SIZE;
-        items[rear] = element;
-        printf("\nInserted %d\n", element);
-    }
-}
-
-int deQueue() {
-    int element;
-    if (isEmpty()) {
-        printf("\nQueue is empty\n");
-        return -1;
-    } else {
-        element = items[front];
-        if (front == rear) {
-            front = -1;
-            rear = -1;
-        } else {
-            front = (front + 1) % SIZE;
-        }
-        printf("\nDeleted %d\n", element);
-        return element;
-    }
-}
-
-void peek() {
-    if (isEmpty()) {
-        printf("\nQueue is empty\n");
-    } else {
-        printf("\nFront element is %d\n", items[front]);
-    }
-}
-
-void display() {
-    if (isEmpty()) {
-        printf("\nQueue is empty\n");
-    } else {
-        int i;
-        printf("\nQueue elements: ");
-        for (i = front; i != rear; i = (i + 1) % SIZE) {
-            printf("%d ", items[i]);
-        }
-        printf("%d\n", items[i]);
-    }
+int priority(char x) {
+    if (x == '(')
+        return 0;
+    if (x == '+' || x == '-')
+        return 1;
+    if (x == '*' || x == '/')
+        return 2;
+    if (x == '^')
+        return 3;
+    return 0;
 }
 
 int main() {
-    int value, choice;
-    while (1) {
-        printf("\n\n***** MENU *****\n");
-        printf("1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-        switch (choice) {
-            case 1:
-                printf("Enter the value to insert: ");
-                scanf("%d", &value);
-                enQueue(value);
-                break;
-            case 2:
-                deQueue();
-                break;
-            case 3:
-                peek();
-                break;
-            case 4:
-                display();
-                break;
-            case 5:
-                exit(0);
-            default:
-                printf("\nWrong selection! Try again.");
+    char exp[MAX];
+    char x;
+    int i;
+
+    printf("Enter infix expression: ");
+    scanf("%s", exp);
+
+    printf("Postfix expression: ");
+
+    for (i = 0; exp[i] != '\0'; i++) {
+
+        if (isalnum(exp[i])) {
+            printf("%c", exp[i]);
+        }
+
+        else if (exp[i] == '(') {
+            push(exp[i]);
+        }
+
+        else if (exp[i] == ')') {
+            while ((x = pop()) != '(')
+                printf("%c", x);
+        }
+
+        else {
+            while (top != -1 && priority(stack[top]) >= priority(exp[i])) {
+                printf("%c", pop());
+            }
+            push(exp[i]);
         }
     }
+
+    while (top != -1) {
+        printf("%c", pop());
+    }
+
     return 0;
 }
